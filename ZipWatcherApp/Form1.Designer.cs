@@ -33,6 +33,7 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.btnLog = new System.Windows.Forms.Button();
             this.textBox = new System.Windows.Forms.TextBox();
+            this.lblResult = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnBrowse
@@ -73,6 +74,7 @@
             this.btnLog.TabIndex = 3;
             this.btnLog.Text = "See Log";
             this.btnLog.UseVisualStyleBackColor = true;
+            this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
             // 
             // textBox
             // 
@@ -82,11 +84,23 @@
             this.textBox.TabIndex = 0;
             this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblResult.Location = new System.Drawing.Point(43, 156);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(50, 13);
+            this.lblResult.TabIndex = 4;
+            this.lblResult.Text = "response";
+            this.lblResult.Click += new System.EventHandler(this.LabelMsg_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(433, 237);
+            this.Controls.Add(this.lblResult);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.btnLog);
             this.Controls.Add(this.btnStop);
@@ -106,6 +120,7 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnLog;
         private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.Label lblResult;
     }
 }
 

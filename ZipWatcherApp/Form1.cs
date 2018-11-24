@@ -1,31 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Timer = System.Windows.Forms.Timer;
-using System.Runtime.InteropServices;
-using SevenZip;
-
 
 namespace ZipWatcherApp
 {
-
     public partial class Form1 : Form
     {
-        private Boolean isActive;
+        private SevenZip _sevenZip;
+        private Boolean _isActive;
 
         public Form1()
         {
             InitializeComponent();
+            this._sevenZip = new SevenZip();
         }
 
         //private void Form1_Load(object sender, EventArgs e)
@@ -36,17 +24,6 @@ namespace ZipWatcherApp
         //[DllImport("kernel32.dll", SetLastError = true)]
         //[return: MarshalAs(UnmanagedType.Bool)]
         //static extern bool AllocConsole();
-
-        public void CreateZipFolder(string sourceName, string targetName)
-        {
-            ProcessStartInfo zipProcess = new ProcessStartInfo();
-            zipProcess.FileName = @"E:\Program Files\7-Zip\7z.exe"; // select the 7zip program to start
-            zipProcess.Arguments = "a -t7z \"" + targetName + "\" \"" + sourceName + "\" -mx=9";
-            zipProcess.WindowStyle = ProcessWindowStyle.Minimized;
-            Process zip = Process.Start(zipProcess);
-            zip.WaitForExit();
-        }
-
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -64,12 +41,11 @@ namespace ZipWatcherApp
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            isActive = true;
+            _isActive = true;
 
             FileSystemWatcher rootWatcher = new FileSystemWatcher();
             rootWatcher.Path = textBox.Text;
@@ -91,7 +67,7 @@ namespace ZipWatcherApp
             {
                 if (watchedPath.Contains("New folder"))
                 {
-                    MessageBox.Show("naming not accepted.");
+                    MessageBox.Show($"naming not accepted.").ToString();
                     return;
                 }
 
@@ -108,7 +84,7 @@ namespace ZipWatcherApp
             FileSystemWatcher subFolderWatcher = new FileSystemWatcher();
             subFolderWatcher.Path = watchedPath;
 
-            if (isActive)
+            if (_isActive)
             {
                 var aTimer = new System.Timers.Timer();
                 aTimer.Interval = 15000;
@@ -126,7 +102,6 @@ namespace ZipWatcherApp
                 subFolderWatcher.Filter = "*.*";
                 subFolderWatcher.EnableRaisingEvents = true;
             }
-
         }
 
         private void subFolderWatcher_Created(object sender, FileSystemEventArgs evt, System.Timers.Timer aTimer)
@@ -138,7 +113,6 @@ namespace ZipWatcherApp
             aTimer.Enabled = false;
             aTimer.Enabled = true;
             MessageBox.Show($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
-
         }
 
         private void OnTimedEvent(object timerSender, ElapsedEventArgs timerEvt, FileSystemWatcher subFolderWatcher)
@@ -158,8 +132,7 @@ namespace ZipWatcherApp
 
             if (parentDir != null)
             {
-
-                CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + "7z");
+                _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
             }
 
             subFolderWatcher.Dispose();
@@ -167,7 +140,15 @@ namespace ZipWatcherApp
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            isActive = false;
+            _isActive = false;
+        }
+
+        private void btnLog_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void LabelMsg_Click(object sender, EventArgs e)
+        {
         }
     }
 }
