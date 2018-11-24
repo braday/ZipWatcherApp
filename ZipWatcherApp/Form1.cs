@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -15,6 +16,19 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace ZipWatcherApp
 {
+    public class SevenZip
+    {
+        public void CreateZipFolder(string sourceName, string targetName)
+        {
+            ProcessStartInfo zipProcess = new ProcessStartInfo();
+            zipProcess.FileName = @"E:\Program Files\7-Zip\7z.exe"; // select the 7zip program to start
+            zipProcess.Arguments = "a -t7z \"" + targetName + "\" \"" + sourceName + "\" -mx=9";
+            zipProcess.WindowStyle = ProcessWindowStyle.Minimized;
+            Process zip = Process.Start(zipProcess);
+            zip.WaitForExit();
+        }
+    }
+
     public partial class Form1 : Form
     {
         private Boolean isActive;
@@ -129,11 +143,11 @@ namespace ZipWatcherApp
             var file = new FileInfo(textBox.Text);
             var parentDir = file.Directory == null ? null : file.Directory.Parent; // test if dir or not
 
-            //if (parentDir != null)
-            //{
-            //    SevenZip zip = _zip;
-            //    zip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
-            //}
+            if (parentDir != null)
+            {
+                SevenZip zip = new SevenZip();
+                zip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+            }
 
             subFolderWatcher.Dispose();
         }
