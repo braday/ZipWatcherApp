@@ -12,22 +12,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
+using System.Runtime.InteropServices;
+using SevenZip;
 
 
 namespace ZipWatcherApp
 {
-    public class SevenZip
-    {
-        public void CreateZipFolder(string sourceName, string targetName)
-        {
-            ProcessStartInfo zipProcess = new ProcessStartInfo();
-            zipProcess.FileName = @"E:\Program Files\7-Zip\7z.exe"; // select the 7zip program to start
-            zipProcess.Arguments = "a -t7z \"" + targetName + "\" \"" + sourceName + "\" -mx=9";
-            zipProcess.WindowStyle = ProcessWindowStyle.Minimized;
-            Process zip = Process.Start(zipProcess);
-            zip.WaitForExit();
-        }
-    }
 
     public partial class Form1 : Form
     {
@@ -37,6 +27,26 @@ namespace ZipWatcherApp
         {
             InitializeComponent();
         }
+
+        //private void Form1_Load(object sender, EventArgs e)
+        //{
+        //    AllocConsole();
+        //}
+
+        //[DllImport("kernel32.dll", SetLastError = true)]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        //static extern bool AllocConsole();
+
+        public void CreateZipFolder(string sourceName, string targetName)
+        {
+            ProcessStartInfo zipProcess = new ProcessStartInfo();
+            zipProcess.FileName = @"E:\Program Files\7-Zip\7z.exe"; // select the 7zip program to start
+            zipProcess.Arguments = "a -t7z \"" + targetName + "\" \"" + sourceName + "\" -mx=9";
+            zipProcess.WindowStyle = ProcessWindowStyle.Minimized;
+            Process zip = Process.Start(zipProcess);
+            zip.WaitForExit();
+        }
+
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -72,20 +82,23 @@ namespace ZipWatcherApp
         {
             string watchedPath = e.FullPath; // watch the root folder for any file creation.
 
-            var isFolder = Directory.Exists(watchedPath);
-            var isFile = File.Exists(watchedPath);
+            var folder = Directory.Exists(watchedPath);
+            var file = File.Exists(watchedPath);
 
             //MessageBox.Show(watchRootLv);
 
-            while (watchedPath.Contains("New folder"))
+            if (folder)
             {
-                MessageBox.Show($"naming not accepted.");
-                return;
+                if (watchedPath.Contains("New folder"))
+                {
+                    MessageBox.Show("naming not accepted.");
+                    return;
+                }
+
+                MessageBox.Show($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
             }
-            MessageBox.Show($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
 
-
-            if (isFile)
+            if (File.Exists(e.FullPath))
             {
                 MessageBox.Show($"{e.Name} File : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 return;
@@ -124,7 +137,7 @@ namespace ZipWatcherApp
             aTimer.Stop();
             aTimer.Enabled = false;
             aTimer.Enabled = true;
-            Console.WriteLine($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
+            MessageBox.Show($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
 
         }
 
@@ -133,8 +146,8 @@ namespace ZipWatcherApp
             subFolderWatcher.EnableRaisingEvents = false;
 
             // Explicit Casting
-            Timer timer = timerSender as Timer;
-            if (timer != null) timer.Stop();
+            if (timerSender is System.Timers.Timer timer) timer.Stop();
+
             //timer.Dispose();
 
             // Once time elapsed, zip the folder here?
@@ -145,8 +158,8 @@ namespace ZipWatcherApp
 
             if (parentDir != null)
             {
-                SevenZip zip = new SevenZip();
-                zip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+
+                CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + "7z");
             }
 
             subFolderWatcher.Dispose();
