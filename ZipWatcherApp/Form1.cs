@@ -145,10 +145,9 @@ namespace ZipWatcherApp
 
         private void btnLog_Click(object sender, EventArgs e)
         {
+            // create a log file class call LogList?
         }
 
-        private void LabelMsg_Click(object sender, EventArgs e)
-        {
-        }
+
     }
 }
