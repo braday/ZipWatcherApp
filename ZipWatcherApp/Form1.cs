@@ -1,29 +1,38 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
+using System.Text;
 using System.Timers;
 using System.Windows.Forms;
+
 
 namespace ZipWatcherApp
 {
     public partial class Form1 : Form
     {
+        private FileSystemWatcher _fsw;
+        private System.Timers.Timer _timer;
         private SevenZip _sevenZip;
-        private Boolean _isActive;
+        private bool _isActive;
+        private BackgroundWorker _backgroundWorker;
 
         public Form1()
         {
             InitializeComponent();
             this._sevenZip = new SevenZip();
+            this._fsw = new FileSystemWatcher();
+            this._backgroundWorker = new BackgroundWorker();
+
+
+            _backgroundWorker.WorkerReportsProgress = true;
+            _backgroundWorker.WorkerSupportsCancellation = true;
         }
 
-        //private void Form1_Load(object sender, EventArgs e)
-        //{
-        //    AllocConsole();
-        //}
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _isActive = false;
 
-        //[DllImport("kernel32.dll", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //static extern bool AllocConsole();
+        }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -45,13 +54,17 @@ namespace ZipWatcherApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            _isActive = true;
+            _backgroundWorker.RunWorkerAsync();
 
-            FileSystemWatcher rootWatcher = new FileSystemWatcher();
+            FileSystemWatcher rootWatcher = _fsw;
             rootWatcher.Path = textBox.Text;
             rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
             rootWatcher.EnableRaisingEvents = true;
             rootWatcher.Filter = "*.*";
+
+            lblResult.Text = string.Format($"Start Watching...");
+
+            _isActive = true;
         }
 
         private void rootWatcher_Created(object sender, FileSystemEventArgs e)
@@ -61,8 +74,6 @@ namespace ZipWatcherApp
             var folder = Directory.Exists(watchedPath);
             var file = File.Exists(watchedPath);
 
-            //MessageBox.Show(watchRootLv);
-
             if (folder)
             {
                 if (watchedPath.Contains("New folder"))
@@ -70,22 +81,20 @@ namespace ZipWatcherApp
                     MessageBox.Show($"naming not accepted.").ToString();
                     return;
                 }
-
                 MessageBox.Show($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
             }
-
-            if (File.Exists(e.FullPath))
+            if (file)
             {
                 MessageBox.Show($"{e.Name} File : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 return;
             }
 
-            // create another watcher for file creation and send event to timer
-            FileSystemWatcher subFolderWatcher = new FileSystemWatcher();
-            subFolderWatcher.Path = watchedPath;
-
             if (_isActive)
             {
+                // create another watcher for file creation and send event to timer
+                FileSystemWatcher subFolderWatcher = new FileSystemWatcher();
+                subFolderWatcher.Path = watchedPath;
+
                 var aTimer = new System.Timers.Timer();
                 aTimer.Interval = 15000;
 
@@ -109,7 +118,6 @@ namespace ZipWatcherApp
             // if new file created, stop the timer
             //  then restart the timer
             aTimer.AutoReset = false;
-            aTimer.Stop();
             aTimer.Enabled = false;
             aTimer.Enabled = true;
             MessageBox.Show($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
@@ -141,13 +149,27 @@ namespace ZipWatcherApp
         private void btnStop_Click(object sender, EventArgs e)
         {
             _isActive = false;
+
+            // new a watcher and access to the original watcher...
+            var stopWatcher = new FileSystemWatcher();
+
+
+
+            lblResult.Text = "Press Start button to watch.";
+
+            // create a method to reset to the original state?
+            _backgroundWorker.CancelAsync();
         }
 
         private void btnLog_Click(object sender, EventArgs e)
         {
             // create a log file class call LogList?
+            StringBuilder sb = new StringBuilder();
         }
 
+        private void lblResult_Click(object sender, EventArgs e)
+        {
+        }
 
     }
 }
