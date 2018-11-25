@@ -153,6 +153,9 @@ namespace ZipWatcherApp
             var stopWatcher = new FileSystemWatcher();
             stopWatcher.EnableRaisingEvents = false;
 
+            _timer.Stop();
+
+
             lblResult.Text = "Press Start button to watch.";
 
             // create a method to reset to the original state?
