@@ -20,9 +20,9 @@ namespace ZipWatcherApp
         {
             InitializeComponent();
             this._sevenZip = new SevenZip();
+            this._timer = new System.Timers.Timer();
             this._fsw = new FileSystemWatcher();
             this._backgroundWorker = new BackgroundWorker();
-
 
             _backgroundWorker.WorkerReportsProgress = true;
             _backgroundWorker.WorkerSupportsCancellation = true;
@@ -31,7 +31,6 @@ namespace ZipWatcherApp
         private void Form1_Load(object sender, EventArgs e)
         {
             _isActive = false;
-
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -95,13 +94,13 @@ namespace ZipWatcherApp
                 FileSystemWatcher subFolderWatcher = new FileSystemWatcher();
                 subFolderWatcher.Path = watchedPath;
 
-                var aTimer = new System.Timers.Timer();
+                //var aTimer = new System.Timers.Timer();
+                var aTimer = _timer;
                 aTimer.Interval = 15000;
 
                 // Lambda == args => expression
                 // send event to subFolderWatcher
-                aTimer.Elapsed += new ElapsedEventHandler((timerSender, timerEvt) =>
-                    OnTimedEvent(timerSender, timerEvt, subFolderWatcher));
+                aTimer.Elapsed += new ElapsedEventHandler((timerSender, timerEvt) => OnTimedEvent(timerSender, timerEvt, subFolderWatcher));
                 aTimer.AutoReset = false;
                 aTimer.Enabled = true;
 
@@ -128,21 +127,21 @@ namespace ZipWatcherApp
             subFolderWatcher.EnableRaisingEvents = false;
 
             // Explicit Casting
-            if (timerSender is System.Timers.Timer timer) timer.Stop();
+            var aTimer = (System.Timers.Timer)timerSender;
+            aTimer.Stop();
 
-            //timer.Dispose();
-
-            // Once time elapsed, zip the folder here?
             Console.WriteLine($"time up. zip process begin at {timerEvt.SignalTime} \r\n");
 
-            var file = new FileInfo(textBox.Text);
-            var parentDir = file.Directory == null ? null : file.Directory.Parent; // test if dir or not
+            //var file = new FileInfo(textBox.Text);
+            //var parentDir = file.Directory == null ? null : file.Directory.Parent; // test if dir or not
+            //if (parentDir != null)
+            //{
+            //    _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+            //}
 
-            if (parentDir != null)
-            {
-                _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
-            }
+            _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
+            aTimer.Dispose();
             subFolderWatcher.Dispose();
         }
 
@@ -150,10 +149,9 @@ namespace ZipWatcherApp
         {
             _isActive = false;
 
-            // new a watcher and access to the original watcher...
+            // TODO new a watcher and access to the original watcher???
             var stopWatcher = new FileSystemWatcher();
-
-
+            stopWatcher.EnableRaisingEvents = false;
 
             lblResult.Text = "Press Start button to watch.";
 
@@ -163,13 +161,12 @@ namespace ZipWatcherApp
 
         private void btnLog_Click(object sender, EventArgs e)
         {
-            // create a log file class call LogList?
+            // TODO create a log file class call LogList?
             StringBuilder sb = new StringBuilder();
         }
 
         private void lblResult_Click(object sender, EventArgs e)
         {
         }
-
     }
 }
