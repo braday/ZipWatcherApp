@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Timers;
 using System.Windows.Forms;
-
 
 namespace ZipWatcherApp
 {
@@ -14,7 +12,6 @@ namespace ZipWatcherApp
         private System.Timers.Timer _timer;
         private SevenZip _sevenZip;
         private bool _isActive;
-        private BackgroundWorker _backgroundWorker;
 
         public Form1()
         {
@@ -22,10 +19,6 @@ namespace ZipWatcherApp
             this._sevenZip = new SevenZip();
             this._timer = new System.Timers.Timer();
             this._fsw = new FileSystemWatcher();
-            this._backgroundWorker = new BackgroundWorker();
-
-            _backgroundWorker.WorkerReportsProgress = true;
-            _backgroundWorker.WorkerSupportsCancellation = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -53,8 +46,6 @@ namespace ZipWatcherApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            _backgroundWorker.RunWorkerAsync();
-
             FileSystemWatcher rootWatcher = _fsw;
             rootWatcher.Path = textBox.Text;
             rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
@@ -107,7 +98,7 @@ namespace ZipWatcherApp
                 // sub-folder sends event to timer (and wait timer to notify subfolder)
                 subFolderWatcher.Created +=
                     new FileSystemEventHandler((s, evt) => subFolderWatcher_Created(s, evt, aTimer));
-                subFolderWatcher.Filter = "*.*";
+                //subFolderWatcher.Filter = "*.*";
                 subFolderWatcher.EnableRaisingEvents = true;
             }
         }
@@ -128,20 +119,17 @@ namespace ZipWatcherApp
 
             // Explicit Casting
             var aTimer = (System.Timers.Timer)timerSender;
-            aTimer.Stop();
+            //aTimer.Stop();
 
             Console.WriteLine($"time up. zip process begin at {timerEvt.SignalTime} \r\n");
 
-            //var file = new FileInfo(textBox.Text);
-            //var parentDir = file.Directory == null ? null : file.Directory.Parent; // test if dir or not
-            //if (parentDir != null)
-            //{
-            //    _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
-            //}
+            var file = new FileInfo(textBox.Text);
+            var parentDir = file.Directory == null ? null : file.Directory.Parent; // test if dir or not
+            if (parentDir != null)
+            {
+                _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+            }
 
-            _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
-
-            aTimer.Dispose();
             subFolderWatcher.Dispose();
         }
 
@@ -151,15 +139,18 @@ namespace ZipWatcherApp
 
             // TODO new a watcher and access to the original watcher???
             var stopWatcher = new FileSystemWatcher();
+            stopWatcher.Path = textBox.Text;
+            stopWatcher.Created -= new FileSystemEventHandler(rootWatcher_Created);
             stopWatcher.EnableRaisingEvents = false;
 
             _timer.Stop();
 
+            stopWatcher.Dispose();
+            _timer.Dispose();
 
             lblResult.Text = "Press Start button to watch.";
 
             // create a method to reset to the original state?
-            _backgroundWorker.CancelAsync();
         }
 
         private void btnLog_Click(object sender, EventArgs e)
