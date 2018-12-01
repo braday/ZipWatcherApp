@@ -87,9 +87,6 @@ namespace ZipWatcherApp
                     return;
                 }
 
-
-
-
                 if (_isActive)
                 {
                     // create another watcher for file creation and send event to timer
