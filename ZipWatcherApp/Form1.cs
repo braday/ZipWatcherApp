@@ -13,7 +13,6 @@ namespace ZipWatcherApp
         private System.Timers.Timer _timer;
         private SevenZip _sevenZip;
         private bool _isActive;
-        private StreamWriter _sw;
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,7 +22,6 @@ namespace ZipWatcherApp
             this._sevenZip = new SevenZip();
             this._timer = new System.Timers.Timer();
             this._fsw = new FileSystemWatcher();
-            //this._sw = new StreamWriter($@"C:\Users\Patty\Downloads\LogFile.txt");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -71,7 +69,6 @@ namespace ZipWatcherApp
         private void rootWatcher_Created(object sender, FileSystemEventArgs e)
         {
             string watchedPath = e.FullPath; // watch the root folder for any file creation.
-
 
             if (watchedPath.Contains("New folder")) { return; }
 
@@ -145,8 +142,8 @@ namespace ZipWatcherApp
             //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
-            log.Info($@"zip file: {subFolderWatcher.Path} + 7z created at {DateTime.Now.ToString()}");
-            MessageBox.Show($@"zip file: {subFolderWatcher.Path} + 7z created at {DateTime.Now.ToString()}");
+            //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
+            MessageBox.Show($@"zip file: {Path.GetFileName(subFolderWatcher.Path)}.7z created at {DateTime.Now.ToString()}");
 
             subFolderWatcher.Dispose();
         }
