@@ -23,7 +23,7 @@ namespace ZipWatcherApp
             this._sevenZip = new SevenZip();
             this._timer = new System.Timers.Timer();
             this._fsw = new FileSystemWatcher();
-            this._sw = new StreamWriter($@"C:\Users\Patty\Downloads\LogFile.txt");
+            //this._sw = new StreamWriter($@"C:\Users\Patty\Downloads\LogFile.txt");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace ZipWatcherApp
 
             while (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                MessageBox.Show("empty");
+                MessageBox.Show("You must choose a directory to watch");
                 return;
             }
             rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
@@ -145,7 +145,8 @@ namespace ZipWatcherApp
             //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
-            log.Info($@"zip created at {DateTime.Now.ToString()}");
+            log.Info($@"zip file: {subFolderWatcher.Path} + 7z created at {DateTime.Now.ToString()}");
+            MessageBox.Show($@"zip file: {subFolderWatcher.Path} + 7z created at {DateTime.Now.ToString()}");
 
             subFolderWatcher.Dispose();
         }
