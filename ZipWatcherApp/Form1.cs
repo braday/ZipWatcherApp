@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
 using System.Timers;
 using System.Windows.Forms;
 using Timer = System.Timers.Timer;
+using log4net;
 
 namespace ZipWatcherApp
 {
@@ -15,6 +15,7 @@ namespace ZipWatcherApp
         private bool _isActive;
         private StreamWriter _sw;
 
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Form1()
         {
@@ -28,7 +29,6 @@ namespace ZipWatcherApp
         private void Form1_Load(object sender, EventArgs e)
         {
             _isActive = false;
-
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -70,27 +70,24 @@ namespace ZipWatcherApp
 
         private void rootWatcher_Created(object sender, FileSystemEventArgs e)
         {
-
             string watchedPath = e.FullPath; // watch the root folder for any file creation.
-            var logContent = _sw;
+
 
             if (watchedPath.Contains("New folder")) { return; }
 
             var folder = Directory.Exists(watchedPath);
             var file = File.Exists(watchedPath);
 
-
             try
             {
                 if (folder)
                 {
-                    _sw.WriteLine($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
-
+                    log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
 
                 if (file)
                 {
-                    _sw.WriteLine($"{e.Name} File : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
+                    log.Info($"{e.Name} File : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                     return;
                 }
 
@@ -133,7 +130,7 @@ namespace ZipWatcherApp
             aTimer.AutoReset = false;
             aTimer.Enabled = false;
             aTimer.Enabled = true;
-            _sw.WriteLine($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
+            log.Info($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
         }
 
         private void OnTimedEvent(object timerSender, ElapsedEventArgs timerEvt, FileSystemWatcher subFolderWatcher)
@@ -144,14 +141,11 @@ namespace ZipWatcherApp
             Timer aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-
             //string subPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
-
-            _sw.WriteLine($"File zipped at {timerEvt.SignalTime} \r\n");
-            _sw.Close();
+            log.Info($@"zip created at {DateTime.Now.ToString()}");
 
             subFolderWatcher.Dispose();
         }
