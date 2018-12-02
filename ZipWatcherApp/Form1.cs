@@ -53,7 +53,9 @@ namespace ZipWatcherApp
 
             while (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                MessageBox.Show("You must choose a directory to watch");
+                const string msg = "You must choose a directory to watch.";
+                const string caption = "Warning";
+                MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
             rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
