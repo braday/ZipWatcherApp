@@ -3,7 +3,6 @@ using System.IO;
 using System.Timers;
 using System.Windows.Forms;
 using Timer = System.Timers.Timer;
-using log4net;
 
 namespace ZipWatcherApp
 {
