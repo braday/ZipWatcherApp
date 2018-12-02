@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using System.Timers;
 using System.Windows.Forms;
+using Timer = System.Timers.Timer;
 
 namespace ZipWatcherApp
 {
@@ -20,9 +22,7 @@ namespace ZipWatcherApp
             this._sevenZip = new SevenZip();
             this._timer = new System.Timers.Timer();
             this._fsw = new FileSystemWatcher();
-            this._sw = new StreamWriter(@"C:\Users\Patty\Downloads\testLog.txt");
-
-
+            this._sw = new StreamWriter($@"C:\Users\Patty\Downloads\LogFile.txt");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -53,6 +53,12 @@ namespace ZipWatcherApp
         {
             FileSystemWatcher rootWatcher = _fsw;
             rootWatcher.Path = textBox.Text;
+
+            while (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                MessageBox.Show("empty");
+                return;
+            }
             rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
             rootWatcher.EnableRaisingEvents = true;
             rootWatcher.Filter = "*.*";
@@ -66,6 +72,7 @@ namespace ZipWatcherApp
         {
 
             string watchedPath = e.FullPath; // watch the root folder for any file creation.
+            var logContent = _sw;
 
             if (watchedPath.Contains("New folder")) { return; }
 
@@ -94,9 +101,6 @@ namespace ZipWatcherApp
 
                     // TODO fix system arugment exception?
                     subFolderWatcher.Path = watchedPath;
-
-
-
 
                     //var aTimer = new System.Timers.Timer();
                     var aTimer = _timer;
@@ -137,16 +141,18 @@ namespace ZipWatcherApp
             subFolderWatcher.EnableRaisingEvents = false;
 
             // Explicit Casting
-            var aTimer = (System.Timers.Timer)timerSender;
-            //aTimer.Stop();
+            Timer aTimer = (System.Timers.Timer)timerSender;
+            aTimer.Stop();
 
-            _sw.WriteLine($"File zipped at {timerEvt.SignalTime} \r\n");
-
-            _sw.Close();
 
             //string subPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+
+
+            _sw.WriteLine($"File zipped at {timerEvt.SignalTime} \r\n");
+            _sw.Close();
+
             subFolderWatcher.Dispose();
         }
 
