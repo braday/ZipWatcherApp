@@ -171,7 +171,7 @@ namespace ZipWatcherApp
 
         private void btnLog_Click(object sender, EventArgs e)
         {
-            // TODO create a log file class call LogList?
+            // TODO Open a log from this button, readonly
         }
 
         private void lblResult_Click(object sender, EventArgs e)
