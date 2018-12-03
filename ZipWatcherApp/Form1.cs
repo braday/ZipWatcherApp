@@ -79,12 +79,11 @@ namespace ZipWatcherApp
                 if (folder)
                 {
                     // TODO: notification of folder created plus number count
-                    string[] countDirectory = Directory.GetDirectories(watchedPath);
+                    var dirInfo = new DirectoryInfo(watchedPath);
+                    int dirCount = dirInfo.GetDirectories().Length;
 
-                    foreach (var numOfFolder in countDirectory)
-                    {
-                        MessageBox.Show(numOfFolder);
-                    }
+
+
 
 
                     log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
