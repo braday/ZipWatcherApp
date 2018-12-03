@@ -1,8 +1,9 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.IO;
 using System.Timers;
 using System.Windows.Forms;
-using Timer = System.Timers.Timer;
+
 
 namespace ZipWatcherApp
 {
@@ -13,7 +14,7 @@ namespace ZipWatcherApp
         private SevenZip _sevenZip;
         private bool _isActive;
 
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Form1()
         {
@@ -33,36 +34,33 @@ namespace ZipWatcherApp
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             OpenFileDialog ofd = new OpenFileDialog();
 
-            fbd.Description = $"Choose a Folder to Watch";
+            fbd.Description = $"Choose a input directory";
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 // show the path in the text box
-                this.textBox.Text = fbd.SelectedPath;
+                this.textBoxInput.Text = fbd.SelectedPath;
             }
         }
 
-        private void textBox_TextChanged(object sender, EventArgs e)
-        {
-        }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             FileSystemWatcher rootWatcher = _fsw;
-            rootWatcher.Path = textBox.Text;
+            rootWatcher.Path = textBoxInput.Text;
 
-            while (string.IsNullOrWhiteSpace(textBox.Text))
+            if (string.IsNullOrWhiteSpace(textBoxInput.Text))
             {
                 const string msg = "You must choose a directory to watch.";
                 const string caption = "Warning";
                 MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            rootWatcher.Created += new FileSystemEventHandler(rootWatcher_Created);
+            rootWatcher.Created += rootWatcher_Created;
             rootWatcher.EnableRaisingEvents = true;
             rootWatcher.Filter = "*.*";
 
-            lblResult.Text = string.Format($"Start Watching...");
+            lblResult.Text = string.Format($"Start Process...");
 
             _isActive = true;
         }
@@ -80,6 +78,15 @@ namespace ZipWatcherApp
             {
                 if (folder)
                 {
+                    // TODO: notification of folder created plus number count
+                    string[] countDirectory = Directory.GetDirectories(watchedPath);
+
+                    foreach (var numOfFolder in countDirectory)
+                    {
+                        MessageBox.Show(numOfFolder);
+                    }
+
+
                     log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
 
@@ -136,33 +143,34 @@ namespace ZipWatcherApp
             subFolderWatcher.EnableRaisingEvents = false;
 
             // Explicit Casting
-            Timer aTimer = (System.Timers.Timer)timerSender;
+            var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
             //string subPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
-            _sevenZip.CreateZipFolder(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+            // TODO: select different path for output
+            _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
+            // TODO: notification at the toolbar
+
             MessageBox.Show($@"zip file: {Path.GetFileName(subFolderWatcher.Path)}.7z created at {DateTime.Now.ToString()}");
 
             subFolderWatcher.Dispose();
+            aTimer.Dispose();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
             _isActive = false;
 
-            // TODO new a watcher and access to the original watcher???
-            var stopWatcher = new FileSystemWatcher();
-            stopWatcher.Path = textBox.Text;
-            stopWatcher.Created -= new FileSystemEventHandler(rootWatcher_Created);
-            stopWatcher.EnableRaisingEvents = false;
+            //var stopWatcher = new FileSystemWatcher();
+            //stopWatcher.Path = textBox.Text;
+            //stopWatcher.Created -= new FileSystemEventHandler(rootWatcher_Created);
+            //stopWatcher.EnableRaisingEvents = false;
 
             _timer.Stop();
-
-            stopWatcher.Dispose();
-            _timer.Dispose();
 
             lblResult.Text = "Program has stopped, press start button to watch again.";
 
@@ -174,8 +182,20 @@ namespace ZipWatcherApp
             // TODO Open a log from this button, readonly
         }
 
-        private void lblResult_Click(object sender, EventArgs e)
+
+
+
+        private void btnOutput_Click(object sender, EventArgs e)
         {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            fbd.Description = $"Choose an output path";
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                // show the path in the text box
+                this.tBoxOutput.Text = fbd.SelectedPath;
+            }
         }
     }
 }

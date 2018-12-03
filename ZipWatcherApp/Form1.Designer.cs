@@ -32,14 +32,21 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnLog = new System.Windows.Forms.Button();
-            this.textBox = new System.Windows.Forms.TextBox();
+            this.textBoxInput = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblResult = new System.Windows.Forms.Label();
+            this.tBoxOutput = new System.Windows.Forms.TextBox();
+            this.lblOutput = new System.Windows.Forms.Label();
+            this.btnOutput = new System.Windows.Forms.Button();
+            this.cb7zip = new System.Windows.Forms.CheckBox();
+            this.cbZip = new System.Windows.Forms.CheckBox();
+            this.cbRar = new System.Windows.Forms.CheckBox();
+            this.lblInput = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(343, 40);
+            this.btnBrowse.Location = new System.Drawing.Point(357, 40);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(64, 20);
             this.btnBrowse.TabIndex = 0;
@@ -49,7 +56,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(43, 81);
+            this.btnStart.Location = new System.Drawing.Point(69, 202);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(282, 39);
             this.btnStart.TabIndex = 1;
@@ -59,7 +66,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(43, 126);
+            this.btnStop.Location = new System.Drawing.Point(69, 247);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(162, 36);
             this.btnStop.TabIndex = 2;
@@ -69,7 +76,7 @@
             // 
             // btnLog
             // 
-            this.btnLog.Location = new System.Drawing.Point(211, 126);
+            this.btnLog.Location = new System.Drawing.Point(237, 247);
             this.btnLog.Name = "btnLog";
             this.btnLog.Size = new System.Drawing.Size(114, 36);
             this.btnLog.TabIndex = 3;
@@ -77,18 +84,17 @@
             this.btnLog.UseVisualStyleBackColor = true;
             this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
             // 
-            // textBox
+            // textBoxInput
             // 
-            this.textBox.Location = new System.Drawing.Point(43, 40);
-            this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(282, 20);
-            this.textBox.TabIndex = 0;
-            this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+            this.textBoxInput.Location = new System.Drawing.Point(69, 40);
+            this.textBoxInput.Name = "textBoxInput";
+            this.textBoxInput.Size = new System.Drawing.Size(282, 20);
+            this.textBoxInput.TabIndex = 0;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(40, 185);
+            this.lblStatus.Location = new System.Drawing.Point(66, 306);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(40, 13);
             this.lblStatus.TabIndex = 4;
@@ -97,21 +103,91 @@
             // lblResult
             // 
             this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(86, 185);
+            this.lblResult.Location = new System.Drawing.Point(112, 306);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(16, 13);
+            this.lblResult.Size = new System.Drawing.Size(0, 13);
             this.lblResult.TabIndex = 5;
-            this.lblResult.Text = "...";
-            this.lblResult.Click += new System.EventHandler(this.lblResult_Click);
+            // 
+            // tBoxOutput
+            // 
+            this.tBoxOutput.Location = new System.Drawing.Point(69, 79);
+            this.tBoxOutput.Name = "tBoxOutput";
+            this.tBoxOutput.Size = new System.Drawing.Size(282, 20);
+            this.tBoxOutput.TabIndex = 7;
+            // 
+            // lblOutput
+            // 
+            this.lblOutput.AutoSize = true;
+            this.lblOutput.Location = new System.Drawing.Point(12, 82);
+            this.lblOutput.Name = "lblOutput";
+            this.lblOutput.Size = new System.Drawing.Size(39, 13);
+            this.lblOutput.TabIndex = 8;
+            this.lblOutput.Text = "Output";
+            // 
+            // btnOutput
+            // 
+            this.btnOutput.Location = new System.Drawing.Point(357, 78);
+            this.btnOutput.Name = "btnOutput";
+            this.btnOutput.Size = new System.Drawing.Size(64, 20);
+            this.btnOutput.TabIndex = 9;
+            this.btnOutput.Text = "Browse";
+            this.btnOutput.UseVisualStyleBackColor = true;
+            this.btnOutput.Click += new System.EventHandler(this.btnOutput_Click);
+            // 
+            // cb7zip
+            // 
+            this.cb7zip.AutoSize = true;
+            this.cb7zip.Location = new System.Drawing.Point(69, 134);
+            this.cb7zip.Name = "cb7zip";
+            this.cb7zip.Size = new System.Drawing.Size(40, 17);
+            this.cb7zip.TabIndex = 10;
+            this.cb7zip.Text = ".7z";
+            this.cb7zip.UseVisualStyleBackColor = true;
+            // 
+            // cbZip
+            // 
+            this.cbZip.AutoSize = true;
+            this.cbZip.Location = new System.Drawing.Point(115, 134);
+            this.cbZip.Name = "cbZip";
+            this.cbZip.Size = new System.Drawing.Size(42, 17);
+            this.cbZip.TabIndex = 11;
+            this.cbZip.Text = ".zip";
+            this.cbZip.UseVisualStyleBackColor = true;
+            // 
+            // cbRar
+            // 
+            this.cbRar.AutoSize = true;
+            this.cbRar.Location = new System.Drawing.Point(162, 134);
+            this.cbRar.Name = "cbRar";
+            this.cbRar.Size = new System.Drawing.Size(41, 17);
+            this.cbRar.TabIndex = 12;
+            this.cbRar.Text = ".rar";
+            this.cbRar.UseVisualStyleBackColor = true;
+            // 
+            // lblInput
+            // 
+            this.lblInput.AutoSize = true;
+            this.lblInput.Location = new System.Drawing.Point(16, 44);
+            this.lblInput.Name = "lblInput";
+            this.lblInput.Size = new System.Drawing.Size(31, 13);
+            this.lblInput.TabIndex = 13;
+            this.lblInput.Text = "Input";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 237);
+            this.ClientSize = new System.Drawing.Size(433, 381);
+            this.Controls.Add(this.lblInput);
+            this.Controls.Add(this.cbRar);
+            this.Controls.Add(this.cbZip);
+            this.Controls.Add(this.cb7zip);
+            this.Controls.Add(this.btnOutput);
+            this.Controls.Add(this.lblOutput);
+            this.Controls.Add(this.tBoxOutput);
             this.Controls.Add(this.lblResult);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.textBox);
+            this.Controls.Add(this.textBoxInput);
             this.Controls.Add(this.btnLog);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -130,9 +206,16 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnLog;
-        private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.TextBox textBoxInput;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblResult;
+        private System.Windows.Forms.TextBox tBoxOutput;
+        private System.Windows.Forms.Label lblOutput;
+        private System.Windows.Forms.Button btnOutput;
+        private System.Windows.Forms.CheckBox cb7zip;
+        private System.Windows.Forms.CheckBox cbZip;
+        private System.Windows.Forms.CheckBox cbRar;
+        private System.Windows.Forms.Label lblInput;
     }
 }
 
