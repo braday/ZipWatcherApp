@@ -4,7 +4,6 @@ using System.IO;
 using System.Timers;
 using System.Windows.Forms;
 
-
 namespace ZipWatcherApp
 {
     public partial class Form1 : Form
@@ -43,7 +42,6 @@ namespace ZipWatcherApp
             }
         }
 
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             FileSystemWatcher rootWatcher = _fsw;
@@ -81,10 +79,6 @@ namespace ZipWatcherApp
                     // TODO: notification of folder created plus number count
                     var dirInfo = new DirectoryInfo(watchedPath);
                     int dirCount = dirInfo.GetDirectories().Length;
-
-
-
-
 
                     log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
@@ -150,7 +144,6 @@ namespace ZipWatcherApp
             // TODO: select different path for output
             _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
-
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
             // TODO: notification at the toolbar
 
@@ -180,9 +173,6 @@ namespace ZipWatcherApp
         {
             // TODO Open a log from this button, readonly
         }
-
-
-
 
         private void btnOutput_Click(object sender, EventArgs e)
         {
