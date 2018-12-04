@@ -31,7 +31,6 @@ namespace ZipWatcherApp
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            OpenFileDialog ofd = new OpenFileDialog();
 
             fbd.Description = $"Choose a input directory";
 
@@ -54,9 +53,14 @@ namespace ZipWatcherApp
                 MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            rootWatcher.Created += rootWatcher_Created;
+
+            if (rootWatcher.EnableRaisingEvents) return;
+
             rootWatcher.EnableRaisingEvents = true;
             rootWatcher.Filter = "*.*";
+            rootWatcher.Created += rootWatcher_Created;
+            rootWatcher.IncludeSubdirectories = true;
+
 
             lblResult.Text = string.Format($"Start Process...");
 
@@ -82,8 +86,7 @@ namespace ZipWatcherApp
 
                     log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
-
-                if (file)
+                else
                 {
                     log.Info($"{e.Name} File : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                     return;
@@ -139,10 +142,13 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-            //string subPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
-            //string archive = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
+            //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
+            //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             // TODO: select different path for output
-            _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+
+            string inputDir = subFolderWatcher.Path;
+            string outputDir = string.Format(tBoxOutput.Text);
+            _sevenZip.CreateZipFile(outputDir, inputDir + ".7z");
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
             // TODO: notification at the toolbar
