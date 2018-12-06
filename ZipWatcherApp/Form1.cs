@@ -151,17 +151,11 @@ namespace ZipWatcherApp
             string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             // TODO: select different path for output
+            // check all the files in the root folder? then copy to the selected folder using above varible???
 
-            //List<string> files = Directory.GetFiles(parentpath).ToList();
-            //foreach (string file in files)
-            //{
-            //        string newtarget = Path.GetFileName(file);
-            //        //copy journal file to folder
-            //        File.Copy(file, SubWatcher.Path + @"\" + newtarget);
-            //}
 
-            string inputDir = subFolderWatcher.Path;
-            string outputDir = string.Format(tBoxOutput.Text);
+            //string inputDir = subFolderWatcher.Path;
+            //string outputDir = string.Format(tBoxOutput.Text);
             _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
