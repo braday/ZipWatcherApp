@@ -34,7 +34,7 @@ namespace ZipWatcherApp
 
             fbd.Description = $"Choose a input directory";
 
-            if (fbd.ShowDialog() == DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
                 // show the path in the text box
                 this.textBoxInput.Text = fbd.SelectedPath;
@@ -142,13 +142,26 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
+
             //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             // TODO: select different path for output
 
+            //List<string> files = Directory.GetFiles(parentpath).ToList();
+
+            //foreach (string file in files)
+            //{
+            //    if (file.Contains(path + ".jrn"))
+            //    {
+            //        string newtarget = Path.GetFileName(file);
+            //        //copy journal file to folder
+            //        File.Copy(file, SubWatcher.Path + @"\" + newtarget);
+            //    }
+            //}
+
             string inputDir = subFolderWatcher.Path;
             string outputDir = string.Format(tBoxOutput.Text);
-            _sevenZip.CreateZipFile(outputDir, inputDir + ".7z");
+            _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
             // TODO: notification at the toolbar
@@ -182,15 +195,17 @@ namespace ZipWatcherApp
 
         private void btnOutput_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            SaveFileDialog sfd = new SaveFileDialog();
 
-            fbd.Description = $"Choose an output path";
+            sfd.Filter = "zip files (*.7z) | *.7z";
 
-            if (fbd.ShowDialog() == DialogResult.OK)
+            DialogResult result = sfd.ShowDialog();
+
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
             {
-                // show the path in the text box
-                this.tBoxOutput.Text = fbd.SelectedPath;
+                tBoxOutput.Text = sfd.FileName;
             }
+
         }
     }
 }
