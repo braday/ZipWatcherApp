@@ -43,28 +43,34 @@ namespace ZipWatcherApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            FileSystemWatcher rootWatcher = _fsw;
-            rootWatcher.Path = textBoxInput.Text;
-
-            if (string.IsNullOrWhiteSpace(textBoxInput.Text))
+            try
             {
-                const string msg = "You must choose a directory to watch.";
-                const string caption = "Warning";
-                MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
+                FileSystemWatcher rootWatcher = _fsw;
+                rootWatcher.Path = textBoxInput.Text;
+
+                if (string.IsNullOrEmpty(textBoxInput.Text) & string.IsNullOrEmpty(tBoxOutput.Text))
+                {
+                    const string msg = "You must choose a directory to watch.";
+                    const string caption = "Warning";
+                    MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                if (rootWatcher.EnableRaisingEvents) return;
+
+                rootWatcher.EnableRaisingEvents = true;
+                rootWatcher.Filter = "*.*";
+                rootWatcher.Created += rootWatcher_Created;
+                rootWatcher.IncludeSubdirectories = true;
+
+                lblResult.Text = string.Format($"Start Process...");
+
+                _isActive = true;
             }
-
-            if (rootWatcher.EnableRaisingEvents) return;
-
-            rootWatcher.EnableRaisingEvents = true;
-            rootWatcher.Filter = "*.*";
-            rootWatcher.Created += rootWatcher_Created;
-            rootWatcher.IncludeSubdirectories = true;
-
-
-            lblResult.Text = string.Format($"Start Process...");
-
-            _isActive = true;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void rootWatcher_Created(object sender, FileSystemEventArgs e)
@@ -142,21 +148,16 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-
-            //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
-            //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
+            string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
+            string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
             // TODO: select different path for output
 
             //List<string> files = Directory.GetFiles(parentpath).ToList();
-
             //foreach (string file in files)
             //{
-            //    if (file.Contains(path + ".jrn"))
-            //    {
             //        string newtarget = Path.GetFileName(file);
             //        //copy journal file to folder
             //        File.Copy(file, SubWatcher.Path + @"\" + newtarget);
-            //    }
             //}
 
             string inputDir = subFolderWatcher.Path;
@@ -195,17 +196,16 @@ namespace ZipWatcherApp
 
         private void btnOutput_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            FolderBrowserDialog fbdOutput = new FolderBrowserDialog();
 
-            sfd.Filter = "zip files (*.7z) | *.7z";
+            fbdOutput.Description = "Choose folder to move zip file";
 
-            DialogResult result = sfd.ShowDialog();
+            DialogResult result = fbdOutput.ShowDialog();
 
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(sfd.FileName))
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
             {
-                tBoxOutput.Text = sfd.FileName;
+                tBoxOutput.Text = fbdOutput.SelectedPath;
             }
-
         }
     }
 }
