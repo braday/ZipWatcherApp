@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Timers;
 using System.Windows.Forms;
@@ -11,21 +12,45 @@ namespace ZipWatcherApp
         private FileSystemWatcher _fsw;
         private System.Timers.Timer _timer;
         private SevenZip _sevenZip;
-        private bool _isActive;
+        private bool _isActive { get; set; }
+
+        private BlockingCollection<string> _blockingCollection;
 
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public Form1()
         {
             InitializeComponent();
-            this._sevenZip = new SevenZip();
-            this._timer = new System.Timers.Timer();
-            this._fsw = new FileSystemWatcher();
+            _sevenZip = new SevenZip();
+            _timer = new System.Timers.Timer();
+            _fsw = new FileSystemWatcher();
+            _blockingCollection = new BlockingCollection<string>();
+        }
+
+        private void showToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        // TODO: fix notifyIcon
+        private void Form1_Move(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                //notifyIcon1.ShowBalloonTip(500, "Notice", "Minimized", ToolTipIcon.Info);
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             _isActive = false;
+
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -47,6 +72,7 @@ namespace ZipWatcherApp
             {
                 FileSystemWatcher rootWatcher = _fsw;
                 rootWatcher.Path = textBoxInput.Text;
+                rootWatcher.InternalBufferSize = 65536; // 64k memory
 
                 if (string.IsNullOrEmpty(textBoxInput.Text) & string.IsNullOrEmpty(tBoxOutput.Text))
                 {
@@ -87,8 +113,14 @@ namespace ZipWatcherApp
                 if (folder)
                 {
                     // TODO: notification of folder created plus number count
+
                     var dirInfo = new DirectoryInfo(watchedPath);
                     int dirCount = dirInfo.GetDirectories().Length;
+
+                    for (int i = 0; i < dirCount; i++)
+                    {
+                        NotifyIcon ballonTxt = new NotifyIcon();
+                    }
 
                     log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
@@ -153,7 +185,6 @@ namespace ZipWatcherApp
             // TODO: select different path for output
             // check all the files in the root folder? then copy to the selected folder using above varible???
 
-
             //string inputDir = subFolderWatcher.Path;
             //string outputDir = string.Format(tBoxOutput.Text);
             _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
@@ -200,6 +231,12 @@ namespace ZipWatcherApp
             {
                 tBoxOutput.Text = fbdOutput.SelectedPath;
             }
+        }
+
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
