@@ -47,12 +47,11 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(357, 40);
+            this.btnBrowse.Location = new System.Drawing.Point(287, 40);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(64, 20);
             this.btnBrowse.TabIndex = 0;
@@ -94,7 +93,7 @@
             // 
             this.textBoxInput.Location = new System.Drawing.Point(69, 40);
             this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(282, 20);
+            this.textBoxInput.Size = new System.Drawing.Size(212, 20);
             this.textBoxInput.TabIndex = 0;
             // 
             // lblStatus
@@ -118,7 +117,7 @@
             // 
             this.tBoxOutput.Location = new System.Drawing.Point(69, 79);
             this.tBoxOutput.Name = "tBoxOutput";
-            this.tBoxOutput.Size = new System.Drawing.Size(282, 20);
+            this.tBoxOutput.Size = new System.Drawing.Size(212, 20);
             this.tBoxOutput.TabIndex = 7;
             // 
             // lblOutput
@@ -132,7 +131,7 @@
             // 
             // btnOutput
             // 
-            this.btnOutput.Location = new System.Drawing.Point(357, 78);
+            this.btnOutput.Location = new System.Drawing.Point(287, 79);
             this.btnOutput.Name = "btnOutput";
             this.btnOutput.Size = new System.Drawing.Size(64, 20);
             this.btnOutput.TabIndex = 9;
@@ -170,15 +169,6 @@
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showToolStripMenuItem1,
-            this.exitToolStripMenuItem1});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
-            this.contextMenuStrip1.Move += new System.EventHandler(this.Form1_Move);
-            // 
             // showToolStripMenuItem1
             // 
             this.showToolStripMenuItem1.Name = "showToolStripMenuItem1";
@@ -197,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 381);
+            this.ClientSize = new System.Drawing.Size(369, 287);
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.lblOutput);
@@ -215,7 +205,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrimsZipper";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,7 +1,9 @@
 ﻿using log4net;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -32,15 +34,20 @@ namespace ZipWatcherApp
             this.Show();
         }
 
-        // TODO: fix notifyIcon
-        private void Form1_Move(object sender, EventArgs e)
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                this.Hide();
-                //notifyIcon1.ShowBalloonTip(500, "Notice", "Minimized", ToolTipIcon.Info);
-            }
+            Application.Exit();
         }
+
+        // TODO: fix notifyIcon
+        //private void Form1_Move(object sender, EventArgs e)
+        //{
+        //    if (this.WindowState == FormWindowState.Minimized)
+        //    {
+        //        this.Hide();
+        //        notifyIcon1.ShowBalloonTip(500, "Notice", "Minimized", ToolTipIcon.Info);
+        //    }
+        //}
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -50,7 +57,6 @@ namespace ZipWatcherApp
         private void Form1_Load(object sender, EventArgs e)
         {
             _isActive = false;
-
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -74,7 +80,7 @@ namespace ZipWatcherApp
                 rootWatcher.Path = textBoxInput.Text;
                 rootWatcher.InternalBufferSize = 65536; // 64k memory
 
-                if (string.IsNullOrEmpty(textBoxInput.Text) & string.IsNullOrEmpty(tBoxOutput.Text))
+                if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(tBoxOutput.Text))
                 {
                     const string msg = "You must choose a directory to watch.";
                     const string caption = "Warning";
@@ -112,17 +118,21 @@ namespace ZipWatcherApp
             {
                 if (folder)
                 {
-                    // TODO: notification of folder created plus number count
+                    /* TODO: notification of each folder creation with number shown */
+                    //var dirInfo = new DirectoryInfo(watchedPath);
+                    //List<string> subDirList = new List<string>();
+                    string[] subDir = Directory.GetDirectories(watchedPath);
+                    int dirCount = subDir.Length;
 
-                    var dirInfo = new DirectoryInfo(watchedPath);
-                    int dirCount = dirInfo.GetDirectories().Length;
-
-                    for (int i = 0; i < dirCount; i++)
+                    var i = 0;
+                    while (i <= dirCount)
                     {
-                        NotifyIcon ballonTxt = new NotifyIcon();
+                        MessageBox.Show($@"Count: {i}"); // it should be count 1, 2 ,3 and so on.
+                        i++;
                     }
 
-                    log.Info($"{e.Name} Directory : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
+
+                    log.Info($"{e.Name} Directory + {i} : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
                 else
                 {
@@ -190,11 +200,11 @@ namespace ZipWatcherApp
             _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
-            // TODO: notification at the toolbar
 
+            // TODO: notifyIcon here
             MessageBox.Show($@"zip file: {Path.GetFileName(subFolderWatcher.Path)}.7z created at {DateTime.Now.ToString()}");
 
-            subFolderWatcher.Dispose();
+            //subFolderWatcher.Dispose();
             aTimer.Dispose();
         }
 
@@ -202,16 +212,16 @@ namespace ZipWatcherApp
         {
             _isActive = false;
 
-            //var stopWatcher = new FileSystemWatcher();
-            //stopWatcher.Path = textBox.Text;
-            //stopWatcher.Created -= new FileSystemEventHandler(rootWatcher_Created);
-            //stopWatcher.EnableRaisingEvents = false;
+            var stopWatcher = new FileSystemWatcher();
+            stopWatcher.Path = textBoxInput.Text;
+            stopWatcher.Created -= new FileSystemEventHandler(rootWatcher_Created);
+            stopWatcher.EnableRaisingEvents = false;
 
             _timer.Stop();
 
             lblResult.Text = "Program has stopped, press start button to watch again.";
 
-            // create a method to reset to the original state?
+            // create a method to reset to the original state???
         }
 
         private void btnLog_Click(object sender, EventArgs e)
@@ -231,12 +241,6 @@ namespace ZipWatcherApp
             {
                 tBoxOutput.Text = fbdOutput.SelectedPath;
             }
-        }
-
-
-        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
