@@ -1,9 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -121,18 +119,16 @@ namespace ZipWatcherApp
                     /* TODO: notification of each folder creation with number shown */
                     //var dirInfo = new DirectoryInfo(watchedPath);
                     //List<string> subDirList = new List<string>();
-                    string[] subDir = Directory.GetDirectories(watchedPath);
-                    int dirCount = subDir.Length;
+                    string[] subDir = Directory.GetDirectories(textBoxInput.Text);
 
                     var i = 0;
-                    while (i <= dirCount)
+                    while (i <= subDir.Length)
                     {
                         MessageBox.Show($@"Count: {i}"); // it should be count 1, 2 ,3 and so on.
                         i++;
                     }
 
-
-                    log.Info($"{e.Name} Directory + {i} : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
+                    log.Info($"{e.Name} Directory {i} : {e.ChangeType} on {DateTime.Now.ToString()} \r\n");
                 }
                 else
                 {
