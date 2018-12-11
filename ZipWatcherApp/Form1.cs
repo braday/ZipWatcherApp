@@ -37,16 +37,6 @@ namespace ZipWatcherApp
             Application.Exit();
         }
 
-        // TODO: fix notifyIcon
-        //private void Form1_Move(object sender, EventArgs e)
-        //{
-        //    if (this.WindowState == FormWindowState.Minimized)
-        //    {
-        //        this.Hide();
-        //        notifyIcon1.ShowBalloonTip(500, "Notice", "Minimized", ToolTipIcon.Info);
-        //    }
-        //}
-
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
@@ -117,14 +107,13 @@ namespace ZipWatcherApp
                 if (folder)
                 {
                     /* TODO: notification of each folder creation with number shown */
-                    //var dirInfo = new DirectoryInfo(watchedPath);
-                    //List<string> subDirList = new List<string>();
                     string[] subDir = Directory.GetDirectories(textBoxInput.Text);
 
-                    var i = 0;
+                    int i = 1;
+
                     while (i <= subDir.Length)
                     {
-                        MessageBox.Show($@"Count: {i}"); // it should be count 1, 2 ,3 and so on.
+                        notifyIcon1.ShowBalloonTip(1000, "file created", $"{i}", ToolTipIcon.Info); // it should be count 1, 2 ,3 and so on.
                         i++;
                     }
 
@@ -236,6 +225,17 @@ namespace ZipWatcherApp
             if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
             {
                 tBoxOutput.Text = fbdOutput.SelectedPath;
+            }
+        }
+
+        private void MinimiseToSystemTray(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+
+            {
+                this.Hide();
+
+                notifyIcon1.ShowBalloonTip(1000, "Trim Zipper", "click here to resize", ToolTipIcon.Info);
             }
         }
     }
