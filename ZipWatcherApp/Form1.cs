@@ -60,6 +60,23 @@ namespace ZipWatcherApp
             }
         }
 
+        private void btnOutput_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbdOutput = new FolderBrowserDialog();
+
+            fbdOutput.Description = "Choose zip file output location";
+
+            DialogResult result = fbdOutput.ShowDialog();
+
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
+            {
+                //TODO 1.output path
+                var subDirName = Path.GetFileName(textBoxInput.Text);
+                subDirName.Substring(0, subDirName.LastIndexOf($@"\") + 1);
+                tBoxOutput.Text = Path.Combine(fbdOutput.SelectedPath, subDirName);
+            }
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             try
@@ -108,12 +125,13 @@ namespace ZipWatcherApp
                 {
                     /* TODO: notification of each folder creation with number shown */
                     string[] subDir = Directory.GetDirectories(textBoxInput.Text);
+                    //int dirCount = Directory.GetDirectories(textBoxInput.Text).Length;
 
                     int i = 1;
 
                     while (i <= subDir.Length)
                     {
-                        notifyIcon1.ShowBalloonTip(1000, "file created", $"{i}", ToolTipIcon.Info); // it should be count 1, 2 ,3 and so on.
+                        notifyIcon1.ShowBalloonTip(1000, "The number of file created", $"{i}", ToolTipIcon.Info); // it should be count 1, 2 ,3 and so on.
                         i++;
                     }
 
@@ -175,14 +193,14 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-            string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
-            string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\"));
-            // TODO: select different path for output
-            // check all the files in the root folder? then copy to the selected folder using above varible???
 
-            //string inputDir = subFolderWatcher.Path;
-            //string outputDir = string.Format(tBoxOutput.Text);
-            _sevenZip.CreateZipFile(subFolderWatcher.Path, subFolderWatcher.Path + ".7z");
+            /* TODO: 2.select different path for output
+            //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
+            //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\")); */
+
+            string filePath = tBoxOutput.Text.Substring(0, tBoxOutput.Text.LastIndexOf(@"\") + 1);
+
+            _sevenZip.CreateZipFile(textBoxInput.Text, filePath);
 
             //log.Info($@"zip file: {subFolderWatcher.Path}.7z created at {DateTime.Now.ToString()}");
 
@@ -190,7 +208,7 @@ namespace ZipWatcherApp
             MessageBox.Show($@"zip file: {Path.GetFileName(subFolderWatcher.Path)}.7z created at {DateTime.Now.ToString()}");
 
             //subFolderWatcher.Dispose();
-            aTimer.Dispose();
+            //aTimer.Dispose();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -212,20 +230,6 @@ namespace ZipWatcherApp
         private void btnLog_Click(object sender, EventArgs e)
         {
             // TODO Open a log from this button, readonly
-        }
-
-        private void btnOutput_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbdOutput = new FolderBrowserDialog();
-
-            fbdOutput.Description = "Choose folder to move zip file";
-
-            DialogResult result = fbdOutput.ShowDialog();
-
-            if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
-            {
-                tBoxOutput.Text = fbdOutput.SelectedPath;
-            }
         }
 
         private void MinimiseToSystemTray(object sender, EventArgs e)

@@ -114,10 +114,10 @@
             // 
             // tBoxOutput
             // 
-            this.tBoxOutput.Location = new System.Drawing.Point(69, 79);
+            this.tBoxOutput.Location = new System.Drawing.Point(69, 80);
             this.tBoxOutput.Name = "tBoxOutput";
             this.tBoxOutput.Size = new System.Drawing.Size(212, 20);
-            this.tBoxOutput.TabIndex = 7;
+            this.tBoxOutput.TabIndex = 14;
             // 
             // lblOutput
             // 
