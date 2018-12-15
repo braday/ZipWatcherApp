@@ -200,20 +200,17 @@ namespace ZipWatcherApp
             //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\")); */
 
-            /* e.g.
-                var directoryName = Path.GetFileName(txtInput.Text);
-                txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
+            /*
+            string Source = textBoxInput.Text + "\\*";
+            string Target = tBoxOutput.Text + "\\MyZip";
+            _sevenZip.CreateZipFile(Source, Target);
             */
 
-            string source = textBoxInput.Text + "\\*";
-            //string[] sourceFolders = Directory.GetFiles(source, "*.7z", SearchOption.AllDirectories);
-            string target = tBoxOutput.Text + "\\everySingleZipFile"; // the target location only contains zip file from the source location
-
-            foreach (var folder in Directory.GetFiles(source))
+            string source = textBoxInput.Text + "\\";
+            string target = tBoxOutput.Text + "\\everySingleZipFile";  // the target location only contains zip file from the source location
+            foreach (var subfolder in Directory.GetFiles(source))
             {
-
                 _sevenZip.CreateZipFile(source, target);
-
             }
 
             //_sevenZip.CreateZipFile(source, target);
