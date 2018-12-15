@@ -50,7 +50,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(287, 40);
+            this.btnBrowse.Location = new System.Drawing.Point(237, 40);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(64, 20);
             this.btnBrowse.TabIndex = 0;
@@ -62,7 +62,7 @@
             // 
             this.btnStart.Location = new System.Drawing.Point(69, 133);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(282, 39);
+            this.btnStart.Size = new System.Drawing.Size(232, 39);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -72,7 +72,7 @@
             // 
             this.btnStop.Location = new System.Drawing.Point(69, 178);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(162, 36);
+            this.btnStop.Size = new System.Drawing.Size(112, 36);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -80,7 +80,7 @@
             // 
             // btnLog
             // 
-            this.btnLog.Location = new System.Drawing.Point(237, 178);
+            this.btnLog.Location = new System.Drawing.Point(187, 178);
             this.btnLog.Name = "btnLog";
             this.btnLog.Size = new System.Drawing.Size(114, 36);
             this.btnLog.TabIndex = 3;
@@ -92,7 +92,7 @@
             // 
             this.textBoxInput.Location = new System.Drawing.Point(69, 40);
             this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(212, 20);
+            this.textBoxInput.Size = new System.Drawing.Size(162, 20);
             this.textBoxInput.TabIndex = 0;
             // 
             // lblStatus
@@ -107,16 +107,17 @@
             // lblResult
             // 
             this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(112, 237);
+            this.lblResult.Location = new System.Drawing.Point(66, 237);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(0, 13);
+            this.lblResult.Size = new System.Drawing.Size(16, 13);
             this.lblResult.TabIndex = 5;
+            this.lblResult.Text = "...";
             // 
             // tBoxOutput
             // 
             this.tBoxOutput.Location = new System.Drawing.Point(69, 80);
             this.tBoxOutput.Name = "tBoxOutput";
-            this.tBoxOutput.Size = new System.Drawing.Size(212, 20);
+            this.tBoxOutput.Size = new System.Drawing.Size(162, 20);
             this.tBoxOutput.TabIndex = 14;
             // 
             // lblOutput
@@ -130,7 +131,7 @@
             // 
             // btnOutput
             // 
-            this.btnOutput.Location = new System.Drawing.Point(287, 79);
+            this.btnOutput.Location = new System.Drawing.Point(237, 80);
             this.btnOutput.Name = "btnOutput";
             this.btnOutput.Size = new System.Drawing.Size(64, 20);
             this.btnOutput.TabIndex = 9;
@@ -185,7 +186,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 287);
+            this.ClientSize = new System.Drawing.Size(334, 287);
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.lblOutput);
@@ -200,7 +201,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrimsZipper";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Move += new System.EventHandler(this.MinimiseToSystemTray);
