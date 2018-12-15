@@ -205,7 +205,7 @@ namespace ZipWatcherApp
                 txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
             */
 
-            string source = textBoxInput.Text + "\\";
+            string source = textBoxInput.Text + "\\*";
             //string[] sourceFolders = Directory.GetFiles(source, "*.7z", SearchOption.AllDirectories);
             string target = tBoxOutput.Text + "\\everySingleZipFile"; // the target location only contains zip file from the source location
 
