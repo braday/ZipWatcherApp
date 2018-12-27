@@ -75,11 +75,11 @@ namespace ZipWatcherApp
                     txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
                 */
 
-                //TODO 1.output path
                 textBoxOutput.Text = fbdOutput.SelectedPath;
             }
         }
 
+        // Start button
         private void btnStart_Click(object sender, EventArgs e)
         {
             try
@@ -88,11 +88,13 @@ namespace ZipWatcherApp
                 rootWatcher.Path = textBoxInput.Text;
                 rootWatcher.InternalBufferSize = 65536; // 64k memory
 
+                // TODO: make a err msg on label?
                 if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(textBoxOutput.Text))
                 {
                     const string msg = "You must choose a directory to watch.";
                     const string caption = "Warning";
-                    MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    //MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    lblResult.Text = msg;
                     return;
                 }
 
@@ -154,12 +156,17 @@ namespace ZipWatcherApp
                     // TODO fix system arugment exception?
                     subFolderWatcher.Path = watchedPath;
 
-                    //var aTimer = new System.Timers.Timer();
+                    // TODO 1: Timer input manually
+                    // var aTimer = new System.Timers.Timer();
                     var aTimer = _timer;
-                    aTimer.Interval = 15000;
+                    //aTimer.Interval = 15000;
+                    aTimer.Interval = manualSetTime();
 
-                    // Lambda == args => expression
-                    // send event to subFolderWatcher
+
+
+                    /* Lambda == args => expression
+                       send event to subFolderWatcher
+                    */
                     aTimer.Elapsed += new ElapsedEventHandler((timerSender, timerEvt) => OnTimedEvent(timerSender, timerEvt, subFolderWatcher));
                     aTimer.AutoReset = false;
                     aTimer.Enabled = true;
@@ -196,7 +203,7 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-            /* TODO: 2.put time string to avoid dupe
+            /* TODO 2: distinct the file name with date time
             //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\")); */
 
@@ -246,6 +253,11 @@ namespace ZipWatcherApp
 
                 notifyIcon1.ShowBalloonTip(1000, "Trim Zipper", "click here to resize", ToolTipIcon.Info);
             }
+        }
+
+        private void numSet_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
