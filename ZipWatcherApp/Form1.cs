@@ -76,7 +76,8 @@ namespace ZipWatcherApp
                 */
 
 
-                textBoxOutput.Text = fbdOutput.SelectedPath;
+
+                txtBoxOutput.Text = fbdOutput.SelectedPath;
 
             }
         }
@@ -91,7 +92,7 @@ namespace ZipWatcherApp
                 rootWatcher.InternalBufferSize = 65536; // 64k memory
 
                 // TODO: make a err msg on label?
-                if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(textBoxOutput.Text))
+                if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(txtBoxOutput.Text))
 
                 {
                     const string msg = "You must choose a directory to watch.";
@@ -219,7 +220,7 @@ namespace ZipWatcherApp
             */
 
             string source = textBoxInput.Text + "\\";
-            string target = tBoxOutput.Text + "\\everySingleZipFile";  // the target location only contains zip file from the source location
+            string target = txtBoxOutput.Text + "\\everySingleZipFile";  // the target location only contains zip file from the source location
             foreach (var subfolder in Directory.GetFiles(source))
             {
                 _sevenZip.CreateZipFile(source, target);

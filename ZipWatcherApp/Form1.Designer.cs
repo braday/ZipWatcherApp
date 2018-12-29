@@ -37,7 +37,7 @@
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblResult = new System.Windows.Forms.Label();
-            this.tBoxOutput = new System.Windows.Forms.TextBox();
+            this.txtBoxOutput = new System.Windows.Forms.TextBox();
             this.lblOutput = new System.Windows.Forms.Label();
             this.btnOutput = new System.Windows.Forms.Button();
             this.lblInput = new System.Windows.Forms.Label();
@@ -118,19 +118,12 @@
             this.lblResult.TabIndex = 5;
             this.lblResult.Text = "...";
             // 
-            // textBoxOutput
+            // txtBoxOutput
             // 
-<<<<<<< HEAD
-            this.textBoxOutput.Location = new System.Drawing.Point(57, 81);
-            this.textBoxOutput.Name = "textBoxOutput";
-            this.textBoxOutput.Size = new System.Drawing.Size(227, 20);
-            this.textBoxOutput.TabIndex = 14;
-=======
-            this.tBoxOutput.Location = new System.Drawing.Point(69, 80);
-            this.tBoxOutput.Name = "tBoxOutput";
-            this.tBoxOutput.Size = new System.Drawing.Size(162, 20);
-            this.tBoxOutput.TabIndex = 14;
->>>>>>> parent of 77548e8... asdf
+            this.txtBoxOutput.Location = new System.Drawing.Point(57, 81);
+            this.txtBoxOutput.Name = "txtBoxOutput";
+            this.txtBoxOutput.Size = new System.Drawing.Size(227, 20);
+            this.txtBoxOutput.TabIndex = 14;
             // 
             // lblOutput
             // 
@@ -241,7 +234,7 @@
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.btnOutput);
             this.Controls.Add(this.lblOutput);
-            this.Controls.Add(this.tBoxOutput);
+            this.Controls.Add(this.txtBoxOutput);
             this.Controls.Add(this.lblResult);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.textBoxInput);
@@ -270,7 +263,7 @@
         private System.Windows.Forms.TextBox textBoxInput;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.TextBox tBoxOutput;
+        private System.Windows.Forms.TextBox txtBoxOutput;
         private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.Button btnOutput;
         private System.Windows.Forms.Label lblInput;
