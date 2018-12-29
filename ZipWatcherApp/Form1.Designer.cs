@@ -49,8 +49,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblMinute = new System.Windows.Forms.Label();
-            this.numSet = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numSet)).BeginInit();
+            this.numUpDown = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBrowse
@@ -210,20 +210,25 @@
             this.lblMinute.TabIndex = 17;
             this.lblMinute.Text = "minutes";
             // 
-            // numSet
+            // numUpDown
             // 
-            this.numSet.Location = new System.Drawing.Point(66, 124);
-            this.numSet.Name = "numSet";
-            this.numSet.Size = new System.Drawing.Size(33, 20);
-            this.numSet.TabIndex = 18;
-            this.numSet.ValueChanged += new System.EventHandler(this.numSet_ValueChanged);
+            this.numUpDown.Location = new System.Drawing.Point(66, 124);
+            this.numUpDown.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numUpDown.Name = "numUpDown";
+            this.numUpDown.Size = new System.Drawing.Size(33, 20);
+            this.numUpDown.TabIndex = 18;
+            this.numUpDown.ValueChanged += new System.EventHandler(this.numSet_ValueChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(331, 287);
-            this.Controls.Add(this.numSet);
+            this.Controls.Add(this.numUpDown);
             this.Controls.Add(this.lblMinute);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.lblInput);
@@ -243,7 +248,7 @@
             this.Text = "TrimsZipper";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Move += new System.EventHandler(this.MinimiseToSystemTray);
-            ((System.ComponentModel.ISupportInitialize)(this.numSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -270,7 +275,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label lblTimer;
         private System.Windows.Forms.Label lblMinute;
-        private System.Windows.Forms.NumericUpDown numSet;
+        private System.Windows.Forms.NumericUpDown numUpDown;
     }
 }
 

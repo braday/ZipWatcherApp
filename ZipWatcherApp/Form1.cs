@@ -159,10 +159,11 @@ namespace ZipWatcherApp
                     // TODO 1: Timer input manually
                     // var aTimer = new System.Timers.Timer();
                     var aTimer = _timer;
-                    //aTimer.Interval = 15000;
-                    aTimer.Interval = manualSetTime();
 
+                    int inputTimer = Convert.ToInt32(numUpDown.Value);
 
+                    int iMinute = 1000 * 60;
+                    aTimer.Interval = inputTimer * iMinute;
 
                     /* Lambda == args => expression
                        send event to subFolderWatcher
@@ -257,7 +258,6 @@ namespace ZipWatcherApp
 
         private void numSet_ValueChanged(object sender, EventArgs e)
         {
-
         }
     }
 }
