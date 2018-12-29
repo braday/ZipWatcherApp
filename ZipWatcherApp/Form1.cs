@@ -75,7 +75,12 @@ namespace ZipWatcherApp
                     txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
                 */
 
+<<<<<<< HEAD
                 textBoxOutput.Text = fbdOutput.SelectedPath;
+=======
+                //TODO 1.output path
+                tBoxOutput.Text = fbdOutput.SelectedPath;
+>>>>>>> parent of 77548e8... asdf
             }
         }
 
@@ -88,8 +93,12 @@ namespace ZipWatcherApp
                 rootWatcher.Path = textBoxInput.Text;
                 rootWatcher.InternalBufferSize = 65536; // 64k memory
 
+<<<<<<< HEAD
                 // TODO: make a err msg on label?
                 if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(textBoxOutput.Text))
+=======
+                if (string.IsNullOrWhiteSpace(textBoxInput.Text) & string.IsNullOrWhiteSpace(tBoxOutput.Text))
+>>>>>>> parent of 77548e8... asdf
                 {
                     const string msg = "You must choose a directory to watch.";
                     const string caption = "Warning";
@@ -204,19 +213,28 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
+<<<<<<< HEAD
             /* TODO 2: distinct the file name with date time
+=======
+            /* TODO: 2.select different path for output
+>>>>>>> parent of 77548e8... asdf
             //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
             //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\")); */
 
-            string inputPath = textBoxInput.Text;
-            string outputPath = textBoxOutput.Text;
+            /*
+            string Source = textBoxInput.Text + "\\*";
+            string Target = tBoxOutput.Text + "\\MyZip";
+            _sevenZip.CreateZipFile(Source, Target);
+            */
 
-            foreach (var source in Directory.GetDirectories(inputPath))
+            string source = textBoxInput.Text + "\\";
+            string target = tBoxOutput.Text + "\\everySingleZipFile";  // the target location only contains zip file from the source location
+            foreach (var subfolder in Directory.GetFiles(source))
             {
-                string folderName = Path.GetFileName(source);
-                string target = Path.Combine(outputPath, folderName + ".7z");
                 _sevenZip.CreateZipFile(source, target);
             }
+
+            //_sevenZip.CreateZipFile(source, target);
 
             MessageBox.Show($@"zip file created at {DateTime.Now.ToString()}");
 
