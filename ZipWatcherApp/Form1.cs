@@ -162,8 +162,8 @@ namespace ZipWatcherApp
                     // TODO 1: Timer input manually
                     var aTimer = _timer; //_timer = new System.Timers.Timer();
 
-                    int userInputTime = int.Parse(numUpDown.Text);
-                    //int inputTimer = Convert.ToInt32(numUpDown.Value);
+                    //int userInputTime = int.Parse(numUpDown.Text);
+                    int userInputTime = Convert.ToInt32(numUpDown.Value);
 
                     int iSecond = 1000; // 1 millisecond 
 
