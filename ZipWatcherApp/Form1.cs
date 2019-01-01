@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -163,11 +164,19 @@ namespace ZipWatcherApp
                     // TODO 1: Timer input manually
                     // var aTimer = new System.Timers.Timer();
                     var aTimer = _timer;
+                    aTimer.Interval = 5000;
 
-                    int inputTimer = Convert.ToInt32(numUpDown.Value);
+                    //int inputTimer = Convert.ToInt32(numUpDown.Value);
 
-                    int iMinute = 1000 * 60;
-                    aTimer.Interval = inputTimer * iMinute;
+                    // int iSecond = 600;
+                    //aTimer.Interval = inputTimer * iSecond;
+
+
+                    //int duration = 0;
+
+                    //duration--;
+                    //numUpDown.Value = duration;
+
 
                     /* Lambda == args => expression
                        send event to subFolderWatcher
@@ -219,11 +228,11 @@ namespace ZipWatcherApp
             _sevenZip.CreateZipFile(Source, Target);
             */
 
-            string source = textBoxInput.Text + "\\";
-            string target = txtBoxOutput.Text + "\\everySingleZipFile";  // the target location only contains zip file from the source location
-            foreach (var subfolder in Directory.GetFiles(source))
+            foreach (var subfolder in Directory.GetDirectories(textBoxInput.Text))
             {
-                _sevenZip.CreateZipFile(source, target);
+                string source = Path.GetFileName(subfolder);
+                string target = Path.Combine(txtBoxOutput.Text, source + ".7z");
+                _sevenZip.CreateZipFile(subfolder, target);
             }
 
             //_sevenZip.CreateZipFile(source, target);

@@ -48,7 +48,7 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.lblTimer = new System.Windows.Forms.Label();
-            this.lblMinute = new System.Windows.Forms.Label();
+            this.lblSec = new System.Windows.Forms.Label();
             this.numUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).BeginInit();
             this.SuspendLayout();
@@ -197,22 +197,22 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Location = new System.Drawing.Point(12, 131);
             this.lblTimer.Name = "lblTimer";
-            this.lblTimer.Size = new System.Drawing.Size(48, 13);
+            this.lblTimer.Size = new System.Drawing.Size(33, 13);
             this.lblTimer.TabIndex = 16;
-            this.lblTimer.Text = "Set timer";
+            this.lblTimer.Text = "Timer";
             // 
-            // lblMinute
+            // lblSec
             // 
-            this.lblMinute.AutoSize = true;
-            this.lblMinute.Location = new System.Drawing.Point(105, 131);
-            this.lblMinute.Name = "lblMinute";
-            this.lblMinute.Size = new System.Drawing.Size(43, 13);
-            this.lblMinute.TabIndex = 17;
-            this.lblMinute.Text = "minutes";
+            this.lblSec.AutoSize = true;
+            this.lblSec.Location = new System.Drawing.Point(96, 131);
+            this.lblSec.Name = "lblSec";
+            this.lblSec.Size = new System.Drawing.Size(47, 13);
+            this.lblSec.TabIndex = 17;
+            this.lblSec.Text = "seconds";
             // 
             // numUpDown
             // 
-            this.numUpDown.Location = new System.Drawing.Point(66, 124);
+            this.numUpDown.Location = new System.Drawing.Point(57, 124);
             this.numUpDown.Maximum = new decimal(new int[] {
             60,
             0,
@@ -229,7 +229,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(331, 287);
             this.Controls.Add(this.numUpDown);
-            this.Controls.Add(this.lblMinute);
+            this.Controls.Add(this.lblSec);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.btnOutput);
@@ -274,7 +274,7 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label lblTimer;
-        private System.Windows.Forms.Label lblMinute;
+        private System.Windows.Forms.Label lblSec;
         private System.Windows.Forms.NumericUpDown numUpDown;
     }
 }
