@@ -160,8 +160,7 @@ namespace ZipWatcherApp
                     subFolderWatcher.Path = watchedPath;
 
                     // TODO 1: Timer input manually
-                    // var aTimer = new System.Timers.Timer();
-                    var aTimer = _timer;
+                    var aTimer = _timer; //_timer = new System.Timers.Timer();
 
                     int userInputTime = int.Parse(numUpDown.Text);
                     //int inputTimer = Convert.ToInt32(numUpDown.Value);
