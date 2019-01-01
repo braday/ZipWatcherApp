@@ -76,8 +76,6 @@ namespace ZipWatcherApp
                     txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
                 */
 
-
-
                 txtBoxOutput.Text = fbdOutput.SelectedPath;
 
             }
@@ -164,18 +162,24 @@ namespace ZipWatcherApp
                     // TODO 1: Timer input manually
                     // var aTimer = new System.Timers.Timer();
                     var aTimer = _timer;
-                    aTimer.Interval = 5000;
 
+                    int userInputTime = int.Parse(numUpDown.Text);
                     //int inputTimer = Convert.ToInt32(numUpDown.Value);
 
-                    // int iSecond = 600;
-                    //aTimer.Interval = inputTimer * iSecond;
+                    int iSecond = 1000; // 1 millisecond 
+
+                    int timeLeft = 0;
+
+                    if (userInputTime > timeLeft)
+                    {
+                        userInputTime--;
+                    }
+
+                    aTimer.Interval = userInputTime * iSecond;
 
 
-                    //int duration = 0;
 
-                    //duration--;
-                    //numUpDown.Value = duration;
+
 
 
                     /* Lambda == args => expression
@@ -217,16 +221,7 @@ namespace ZipWatcherApp
             var aTimer = (System.Timers.Timer)timerSender;
             aTimer.Stop();
 
-            /* TODO 2: distinct the file name with date time
-
-            //string filePath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\") + 1);
-            //string folderPath = subFolderWatcher.Path.Substring(0, subFolderWatcher.Path.LastIndexOf(@"\")); */
-
-            /*
-            string Source = textBoxInput.Text + "\\*";
-            string Target = tBoxOutput.Text + "\\MyZip";
-            _sevenZip.CreateZipFile(Source, Target);
-            */
+            /* TODO 2: distinct the file name with date time */
 
             foreach (var subfolder in Directory.GetDirectories(textBoxInput.Text))
             {
