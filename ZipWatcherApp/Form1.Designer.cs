@@ -117,6 +117,7 @@
             this.lblResult.Size = new System.Drawing.Size(16, 13);
             this.lblResult.TabIndex = 5;
             this.lblResult.Text = "...";
+            this.lblResult.Click += new System.EventHandler(this.lblResult_Click);
             // 
             // txtBoxOutput
             // 
@@ -227,7 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 287);
+            this.ClientSize = new System.Drawing.Size(331, 332);
             this.Controls.Add(this.numUpDown);
             this.Controls.Add(this.lblSec);
             this.Controls.Add(this.lblTimer);

@@ -14,6 +14,7 @@ namespace ZipWatcherApp
         private System.Timers.Timer _timer;
         private SevenZip _sevenZip;
         private bool _isActive { get; set; }
+        private int _counter = 0;
 
         private BlockingCollection<string> _blockingCollection;
 
@@ -50,9 +51,10 @@ namespace ZipWatcherApp
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-
-            fbd.Description = $"Choose a input directory";
+            FolderBrowserDialog fbd = new FolderBrowserDialog
+            {
+                Description = $"Choose a input directory"
+            };
 
             if (fbd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
@@ -108,7 +110,12 @@ namespace ZipWatcherApp
                 rootWatcher.Created += rootWatcher_Created;
                 rootWatcher.IncludeSubdirectories = true;
 
-                lblResult.Text = string.Format($"Start Process...");
+                //TODO 3: show countdown
+                var inputTime = numUpDown.Value; // user input in second format 
+
+                inputTime--;
+                lblResult.Text = string.Format($"Start Process and counting down {Convert.ToString(inputTime)}");
+
 
                 _isActive = true;
             }
@@ -162,23 +169,10 @@ namespace ZipWatcherApp
                     // TODO 1: Timer input manually
                     var aTimer = _timer; //_timer = new System.Timers.Timer();
 
-                    //int userInputTime = int.Parse(numUpDown.Text);
                     int userInputTime = Convert.ToInt32(numUpDown.Value);
-
                     int iSecond = 1000; // 1 millisecond 
 
-                    int timeLeft = 0;
-
-                    if (userInputTime > timeLeft)
-                    {
-                        userInputTime--;
-                    }
-
                     aTimer.Interval = userInputTime * iSecond;
-
-
-
-
 
 
                     /* Lambda == args => expression
@@ -218,10 +212,10 @@ namespace ZipWatcherApp
 
             // Explicit Casting
             var aTimer = (System.Timers.Timer)timerSender;
+
             aTimer.Stop();
 
             /* TODO 2: distinct the file name with date time */
-
             foreach (var subfolder in Directory.GetDirectories(textBoxInput.Text))
             {
                 string source = Path.GetFileName(subfolder);
@@ -235,6 +229,7 @@ namespace ZipWatcherApp
 
             subFolderWatcher.Dispose();
             aTimer.Dispose();
+
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -265,12 +260,17 @@ namespace ZipWatcherApp
             {
                 this.Hide();
 
-                notifyIcon1.ShowBalloonTip(1000, "Trim Zipper", "click here to resize", ToolTipIcon.Info);
+                notifyIcon1.ShowBalloonTip(1000, "Trim Zipper", "resize me", ToolTipIcon.Info);
             }
         }
 
         private void numSet_ValueChanged(object sender, EventArgs e)
         {
+        }
+
+        private void lblResult_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
