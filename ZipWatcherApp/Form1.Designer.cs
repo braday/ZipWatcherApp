@@ -112,7 +112,6 @@
             this.lblStatus.Size = new System.Drawing.Size(40, 13);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "Status:";
-
             // 
             // lblResult
             // 
@@ -122,7 +121,6 @@
             this.lblResult.Size = new System.Drawing.Size(16, 13);
             this.lblResult.TabIndex = 5;
             this.lblResult.Text = "...";
-
             // 
             // txtBoxOutput
             // 
@@ -237,7 +235,6 @@
             this.timeLabel.Size = new System.Drawing.Size(100, 20);
             this.timeLabel.TabIndex = 20;
             this.timeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // label2
             // 
@@ -253,7 +250,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 310);
+            this.ClientSize = new System.Drawing.Size(331, 369);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.numUpDown);

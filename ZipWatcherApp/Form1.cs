@@ -8,11 +8,11 @@ namespace ZipWatcherApp
 {
     public partial class Form1 : Form
     {
-        private FileSystemWatcher _fsw;
-        private System.Timers.Timer _timer;
-        private SevenZip _sevenZip;
+        private readonly FileSystemWatcher _fsw;
+        private readonly System.Timers.Timer _timer;
+        private readonly SevenZip _sevenZip;
         private bool _isActive { get; set; }
-        private int timeLeft;
+        private int _timeLeft = 0;
         //private Process process;
 
         //private BlockingCollection<string> _blockingCollection;
@@ -22,9 +22,9 @@ namespace ZipWatcherApp
         public Form1()
         {
             InitializeComponent();
-            _sevenZip = new SevenZip();
-            _fsw = new FileSystemWatcher();
-            _timer = new System.Timers.Timer();
+            this._sevenZip = new SevenZip();
+            this._fsw = new FileSystemWatcher();
+            this._timer = new System.Timers.Timer();
             //_blockingCollection = new BlockingCollection<string>();
         }
 
@@ -52,7 +52,7 @@ namespace ZipWatcherApp
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog
             {
-                Description = $"Choose a input directory"
+                Description = $@"Choose a input directory"
             };
 
             if (fbd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
@@ -72,11 +72,6 @@ namespace ZipWatcherApp
 
             if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
             {
-                /* e.g.
-                    var directoryName = Path.GetFileName(txtInput.Text);
-                    txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
-                */
-
                 txtBoxOutput.Text = fbdOutput.SelectedPath;
             }
         }
@@ -101,7 +96,7 @@ namespace ZipWatcherApp
                     return;
                 }
 
-                if (rootWatcher.EnableRaisingEvents) return;
+                //if (rootWatcher.EnableRaisingEvents) return;
 
                 rootWatcher.EnableRaisingEvents = true;
                 rootWatcher.Filter = "*.*";
@@ -109,11 +104,11 @@ namespace ZipWatcherApp
                 rootWatcher.IncludeSubdirectories = true;
 
                 // TODO 3. Show timer once detect folder creation
-                timeLeft = Convert.ToInt32(numUpDown.Value);
+                _timeLeft = (int)numUpDown.Value;
                 //timeLabel.Text = $"{timeLeft} seconds";
                 timerCounter.Start();
 
-                lblResult.Text = $"Process Started";
+                lblResult.Text = $@"Process Started";
 
                 _isActive = true;
             }
@@ -136,7 +131,6 @@ namespace ZipWatcherApp
             {
                 if (folder)
                 {
-                    timerCounter.Start();
 
                     /* TODO: notification of each folder creation with number shown */
                     string[] subDir = Directory.GetDirectories(textBoxInput.Text);
@@ -185,7 +179,7 @@ namespace ZipWatcherApp
                     //subFolderWatcher.Filter = "*.*";
                     subFolderWatcher.EnableRaisingEvents = true;
 
-               }
+                }
             }
             catch (Exception err)
             {
@@ -201,6 +195,7 @@ namespace ZipWatcherApp
 
             //TODO 5: show reset timer and restart timer
             log.Info($"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}");
+            lblResult.Text = $@"restart the timer as {evt.Name} created on {DateTime.Now.ToString()}";
         }
 
         private void OnTimedEvent(object timerSender, ElapsedEventArgs timerEvt, FileSystemWatcher subFolderWatcher)
@@ -233,10 +228,11 @@ namespace ZipWatcherApp
             _timer.Stop();
             timerCounter.Stop();
             _timer.Dispose();
-            lblResult.Text = "Program has stopped, press start button to watch again.";
+            numUpDown.Value = 0;
+            timeLabel.Text = 0 + @" seconds";
+            lblResult.Text = @"Program has stopped, press start button to watch again.";
 
-            btnStart_Click(this, new EventArgs());
-            _isActive = false;
+            _fsw.Dispose();
         }
 
         private void btnLog_Click(object sender, EventArgs e)
@@ -255,18 +251,19 @@ namespace ZipWatcherApp
 
         private void timerCounter_Tick(object sender, EventArgs e)
         {
-            //TODO: Else if new file created, restart the timer?
-            if (timeLeft > 0)
+            //TODO: if new file created, restart the timer
+            if (_timeLeft > 0)
             {
-                timeLeft = timeLeft - 1;
-                timeLabel.Text = timeLeft + " seconds";
-                lblResult.Text = $"Process began and counting down {timeLabel.Text} in seconds";
+                _timeLeft = _timeLeft - 1;
+                timeLabel.Text = _timeLeft + @" seconds";
+                lblResult.Text = $@"Process began and counting down in {timeLabel.Text} ";
             }
             else
             {
                 timerCounter.Stop();
-                timeLabel.Text = "Time's up";
-                btnStart.Enabled = true;
+                timerCounter.Enabled = false;
+                timeLabel.Text = $@"Time's up";
+
             }
         }
 
