@@ -227,12 +227,12 @@ namespace ZipWatcherApp
 
             _timer.Stop();
             timerCounter.Stop();
-            _timer.Dispose();
             numUpDown.Value = 0;
             timeLabel.Text = 0 + @" seconds";
             lblResult.Text = @"Program has stopped, press start button to watch again.";
 
-            _fsw.Dispose();
+            _fsw.EnableRaisingEvents = false;
+
         }
 
         private void btnLog_Click(object sender, EventArgs e)
