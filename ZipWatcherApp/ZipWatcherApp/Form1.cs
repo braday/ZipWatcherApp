@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows.Forms;
@@ -13,7 +14,6 @@ namespace ZipWatcherApp
         private SevenZip _sevenZip;
         private bool _isActive { get; set; }
         private int timeLeft;
-        //private Process process;
 
         //private BlockingCollection<string> _blockingCollection;
 
@@ -22,9 +22,9 @@ namespace ZipWatcherApp
         public Form1()
         {
             InitializeComponent();
-            _sevenZip = new SevenZip();
-            _fsw = new FileSystemWatcher();
-            _timer = new System.Timers.Timer();
+            this._sevenZip = new SevenZip();
+            this._fsw = new FileSystemWatcher();
+            this._timer = new System.Timers.Timer();
             //_blockingCollection = new BlockingCollection<string>();
         }
 
@@ -72,11 +72,6 @@ namespace ZipWatcherApp
 
             if (result == DialogResult.OK && !string.IsNullOrEmpty(fbdOutput.SelectedPath))
             {
-                /* e.g.
-                    var directoryName = Path.GetFileName(txtInput.Text);
-                    txtOutput.Text = Path.Combine(fbd.SelectedPath, directoryName + ".7z");
-                */
-
                 txtBoxOutput.Text = fbdOutput.SelectedPath;
             }
         }
@@ -112,6 +107,8 @@ namespace ZipWatcherApp
                 timeLeft = Convert.ToInt32(numUpDown.Value);
                 //timeLabel.Text = $"{timeLeft} seconds";
                 timerCounter.Start();
+
+                _timer.Start();
 
                 lblResult.Text = $"Process Started";
 
@@ -230,13 +227,15 @@ namespace ZipWatcherApp
             // Set all text boxes empty
             // When stop button click, Start button disable
 
-            _timer.Stop();
-            timerCounter.Stop();
-            _timer.Dispose();
-            lblResult.Text = "Program has stopped, press start button to watch again.";
+                _timer.Stop();
+                timerCounter.Stop();                
+                timeLabel.Text = 0 + " seconds";
+                numUpDown.Value = 0;
+                lblResult.Text = "Program has stopped, press start button to watch again.";
 
-            btnStart_Click(this, new EventArgs());
-            _isActive = false;
+                _timer.Dispose();
+                _isActive = false;
+
         }
 
         private void btnLog_Click(object sender, EventArgs e)
